@@ -18,11 +18,13 @@ public class MyIterator implements Iterator<Integer>{
     public boolean hasNext() {
         return cursor != null;
     }
-
     @Override
     public Integer next() {
         Integer value = cursor.getInfo();
         cursor = cursor.getNext();
         return value;
+    }
+    public Integer getNext() {
+        return cursor.getNext().getInfo();
     }
 }

@@ -5,7 +5,6 @@ public class MySimpleLinkedList implements Iterable<Integer>{
 	
 	protected Node first;
 	protected int size;
-
 	public MySimpleLinkedList() {
 		this.first = null;
 		this.size = 0;
@@ -136,7 +135,6 @@ public class MySimpleLinkedList implements Iterable<Integer>{
 
 	public static MySimpleLinkedList reverseList(MySimpleLinkedList newList){
 		MySimpleLinkedList returnList = new MySimpleLinkedList();
-
 		for (Integer o : newList) {
 			returnList.insertFront(o);
 		}
@@ -145,22 +143,27 @@ public class MySimpleLinkedList implements Iterable<Integer>{
 	public MySimpleLinkedList subSequenceByValue(Integer threshold){ // Ejercicio entregable
 		MySimpleLinkedList returnList = new MySimpleLinkedList();
 		MyIterator iterator = (MyIterator) this.iterator();
-		Integer maxValue = 0;
-		while(iterator.hasNext()){
-			if(iterator.get() > threshold){
-				returnList.insertFront(maxValue);
-				iterator.move();
-			}else{
-				if(maxValue + iterator.get() > threshold){
-					returnList.insertFront(maxValue);
-					maxValue = 0;
+		Integer value = 0;
+		boolean valueHasRealValue = false;
+		while(iterator.hasNext()){			
+			if(value + iterator.get() > threshold){
+				if(valueHasRealValue && value <= threshold){
+					returnList.insertFront(value);
+					value = 0;
+					valueHasRealValue = false;
 				}else{
-					maxValue += iterator.get();
 					iterator.move();
-				}
+				}	
+			}else{
+				value += iterator.get();
+				valueHasRealValue = true;
+				iterator.move();
 			}
 		}
-		return returnList;
+		if(valueHasRealValue && value <= threshold){
+			returnList.insertFront(value);
+		}
+		return MySimpleLinkedList.reverseList(returnList);
 	}
 	public void printAll(){
 		MyIterator iterator = (MyIterator) this.iterator();
