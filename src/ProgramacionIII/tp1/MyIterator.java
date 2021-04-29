@@ -24,7 +24,4 @@ public class MyIterator implements Iterator<Integer>{
         cursor = cursor.getNext();
         return value;
     }
-    public Integer getNext() {
-        return cursor.getNext().getInfo();
-    }
 }

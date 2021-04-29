@@ -10,7 +10,6 @@ public class MyDoubleIterator implements Iterator<Integer>{
     }
     @Override
     public boolean hasNext() {
-        // TODO Auto-generated method stub
         return cursor != null;
     }
 

@@ -5,36 +5,58 @@ public class MySimpleLinkedList implements Iterable<Integer>{
 	
 	protected Node first;
 	protected int size;
+	protected Node last;
 	public MySimpleLinkedList() {
 		this.first = null;
+		this.last = null;
 		this.size = 0;
 	}
 
 	
 	public void insertFront(Integer o) {
-		// O(1) || en array es O(n)
+		// O(1 es constante)
 		Node tmp = new Node(o,null);
+		if(this.size == 0){
+			this.last = tmp;
+		}
 		tmp.setNext(this.first);
 		this.first = tmp;
 		this.size++;
 	}
 	
 	public Integer extractFront() {
+		// O(1 es constante)
 		if(this.first != null){
 			Integer firstValue = this.first.getInfo();
 			this.first = this.first.getNext();
+			if(this.size == 1){
+				this.last = null;
+			}
 			this.size--;
 			return firstValue;
 		}
 		return null;
 	}
+	public void insertBack(Integer o){
+		// O(1 es constante)
+		Node tmp = new Node(o, null);
+		if(this.size == 0){
+			this.first = tmp;
+		}
+		if(this.last != null){
+			this.last.setNext(tmp);
+		}
+		this.last = tmp;
+		this.size++;
+	}
 
 	public boolean isEmpty() {
+		// O(1 es constante)
 		return this.first == null;
 	}
 
 	public int size() {
-		// O(n = cantidad elem)
+		// O(n con n siendo la cantidad de elementos)... Size ineficiente, usar atributo size con costo O(1)
 		int counter = 0;
 		Node tempElem = this.first;
 		while(tempElem != null){
@@ -44,16 +66,17 @@ public class MySimpleLinkedList implements Iterable<Integer>{
 		return counter;
 	}
 	public int sizeLessExpensive() {
-		return this.size();
+		// O(1 es constante)
+		return this.size;
 	}
-	public void print(){
-		MyIterator iterator = new MyIterator(this.first);
-		System.out.println(iterator.get());
+	public void print(int n){
+		// O(n con n siendo la cantidad de elementos)
+		System.out.println(this.get(n));
 	}
 	
 	public Integer get(int index) {
-		if(index > -1 && index < this.size()){
-			// O(n = cantidad de elementos) || en array es O(1)
+		// O(n con n siendo la cantidad de elementos)
+		if(index > -1 && index < this.size){
 			Node desiredNode= this.first;
 			for (int i = 0; i < index; i++) {
 				desiredNode = desiredNode.getNext();
@@ -64,6 +87,7 @@ public class MySimpleLinkedList implements Iterable<Integer>{
 	}
 	
 	public Integer indexOf(Integer info){
+		// O(n con n siendo la cantidad de elementos, en el peor de los casos)
 		Node tmp = this.first;
 		Integer index = 0;
 		while(tmp != null){
@@ -77,12 +101,13 @@ public class MySimpleLinkedList implements Iterable<Integer>{
 	}
 
 	@Override
-	public Iterator<Integer> iterator() {
+	public Iterator<Integer> iterator() { 
+		// O(1 es constante)
 		return new MyIterator(this.first);
 	}
 
 	public MySimpleLinkedList mergeCommonA(MySimpleLinkedList newList){
-		// Ejercicio 6 a
+		// Ejercicio 6 a O(n^2 con n siendo la cantidad de elementos)
 		MySimpleLinkedList returnList = new MySimpleLinkedList();
 		for (Integer myValue : this) {
 			for (Integer newListValue : newList) {
@@ -93,18 +118,19 @@ public class MySimpleLinkedList implements Iterable<Integer>{
 		}
 		return returnList;
 	}
-	public MySimpleLinkedList mergeCommonB(MySimpleLinkedList newList){ // solo si las 2 listas estan ordenadas, implementar metodo de ordenamiento con costo O(n) o O(n.log.n)
-		// Ejercicio 6 b
+	public MySimpleLinkedList mergeCommonB(MySimpleLinkedList newList){
+		// Ejercicio 6 b O(n^2 con n siendo la cantidad de elementos)
 		MySimpleLinkedList returnList = new MySimpleLinkedList();
 		for (Integer myValue : this) {
-			if(searchValue(myValue, newList)){
+			if(newList.searchValue(myValue)){
 				returnList.insertFront(myValue);
 			}
 		}
 		return returnList;
 	}
-	public boolean searchValue(Integer o, MySimpleLinkedList list){
-		for (Integer i : list) {
+	public boolean searchValue(Integer o){
+		// O(n con n siendo la cantidad de elementos)
+		for (Integer i : this) {
 			if(i > o){
 				return false;
 			}else if (i == o){
@@ -115,7 +141,7 @@ public class MySimpleLinkedList implements Iterable<Integer>{
 	}
 
 	public MySimpleLinkedList firstMinusSecond(MySimpleLinkedList secondList){
-		// Ejercicio 7
+		// Ejercicio 7 O(n^2 con n siendo la cantidad de elementos) Incompleto se debe encargar la lista? falta mejorar en el mejor de los casos
 		MySimpleLinkedList returnList = new MySimpleLinkedList();
 		boolean isNotInSecond = true;
 		for (Integer myValue : this) {
@@ -129,44 +155,20 @@ public class MySimpleLinkedList implements Iterable<Integer>{
 				returnList.insertFront(myValue);
 			}
 		}
-		MySimpleLinkedList.reverseList(returnList);
-		return returnList;
+		return returnList.reverseList();
 	}
 
-	public static MySimpleLinkedList reverseList(MySimpleLinkedList newList){
+	public MySimpleLinkedList reverseList(){
+		// O(n con n siendo la cantidad de elementos)
 		MySimpleLinkedList returnList = new MySimpleLinkedList();
-		for (Integer o : newList) {
+		for (Integer o : this) {
 			returnList.insertFront(o);
 		}
 		return returnList;
 	}
-	public MySimpleLinkedList subSequenceByValue(Integer threshold){ // Ejercicio entregable
-		MySimpleLinkedList returnList = new MySimpleLinkedList();
-		MyIterator iterator = (MyIterator) this.iterator();
-		Integer value = 0;
-		boolean valueHasRealValue = false;
-		while(iterator.hasNext()){			
-			if(value + iterator.get() > threshold){
-				if(valueHasRealValue && value <= threshold){
-					returnList.insertFront(value);
-					value = 0;
-					valueHasRealValue = false;
-				}else{
-					iterator.move();
-				}	
-			}else{
-				value += iterator.get();
-				valueHasRealValue = true;
-				iterator.move();
-			}
-		}
-		if(valueHasRealValue && value <= threshold){
-			returnList.insertFront(value);
-		}
-		return MySimpleLinkedList.reverseList(returnList);
-	}
 	public void printAll(){
 		MyIterator iterator = (MyIterator) this.iterator();
+		// O(n con n siendo la cantidad de elementos)
 		while(iterator.hasNext()){
 			System.out.println(iterator.next());	
 		}
