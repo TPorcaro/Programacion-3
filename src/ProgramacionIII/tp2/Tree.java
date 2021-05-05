@@ -115,6 +115,7 @@ public class Tree {
         }
         return this.derecha.getMaxElement();
     }
+
     public boolean hasElem(Integer value) { // En el peor de los casos es O(n) siendo n la cantidad de arboles, puede ser que este en el ultimo nivel
         if (value == this.valor) {
             return true;
@@ -128,17 +129,52 @@ public class Tree {
         }
     }
     
+    public boolean delete(Integer deleteValue) {
+        if (this.getRoot() == deleteValue) {
+            this.valor = this.izquierda.getAndDeleteHigher(); // consegui el valor que quiero borrar deberia borrar el valor
+            return true;
+        } else {
+            boolean isDeleted = false;
+            if (this.izquierda != null && value < this.getRoot()) {
+                isDeleted = this.izquierda.delete(deleteValue);
+            } else if (this.derecha != null && value > this.getRoot()) {
+                isDeleted = this.derecha.delete(deleteValue);
+            }
+            return isDeleted; // Nunca encontre el valor a borrar
+        }
+    }
+
+    private Integer getAndDeleteHigher() {
+        Integer higherNMI = null;
+        if (this.derecha == null) {
+            if (this.izquierda != null) { // Arbol Hoja
+                higherNMI = this.getRoot();
+                this.valor = null;
+            } else {
+                higherNMI = this.izquierda.getAndDeleteHigher();
+            }
+        } else {
+            return this.derecha.getAndDeleteHigher();
+        }
+        return higherNMI;
+    }
+
     public void printPreOrder() {
         if (this.getRoot() == null) {
             return;
         }
-        System.out.print(this.getRoot() + " ");
+        if (this.izquierda == null) {
+            System.out.print('-');
+        }
+        System.out.print(this.getRoot());
+        if (this.derecha == null) {
+            System.out.print('-');
+        }
+        System.out.print(' ');
         if(this.izquierda != null)
             this.izquierda.printPreOrder();
         if(this.derecha != null)
             this.derecha.printPreOrder();
-            if(this.izquierda == null && this.derecha == null)
-                System.out.print("- ");
     }
     
     public void printInOrder() { // los 3 tienen costo computacional O(n) recorre una vez por "nodo" en mi caso por arbol
