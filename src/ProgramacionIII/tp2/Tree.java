@@ -88,8 +88,11 @@ public class Tree {
         return frontera;
     }
 
+    public ArrayList<Integer> getElemAtLevel(int level) {
+        return this.getElemAtLevel(level, 0);
+    }
 
-    public ArrayList<Integer> getElemAtLevel(int level , int actualLevel) { // En el peor de los casos es de O(n) siendo n la cantidad de arboles, puede que nos hagan ir hasta la altura maxima
+    private ArrayList<Integer> getElemAtLevel(int level , int actualLevel) { // En el peor de los casos es de O(n) siendo n la cantidad de arboles, puede que nos hagan ir hasta la altura maxima
         ArrayList<Integer> elemsAtLevel = new ArrayList<Integer>();
 
         if (actualLevel == level) {
@@ -129,36 +132,81 @@ public class Tree {
         }
     }
     
-    public boolean delete(Integer deleteValue) {
+    public boolean delete(Integer deleteValue) { //preguntar como borrar el arbol en el getNMI
         if (this.getRoot() == deleteValue) {
-            this.valor = this.izquierda.getAndDeleteHigher(); // consegui el valor que quiero borrar deberia borrar el valor
-            return true;
+            if (this.izquierda == null & this.derecha == null) {
+                this.valor = null;
+                return true;
+            } else {
+                Integer nmi = null;
+                if (this.izquierda != null) {
+                    nmi = this.izquierda.getMaxElement();
+                } else {
+                    nmi = this.derecha.getNMI();
+                }
+                this.delete(nmi);
+                this.valor = nmi;
+                return true;
+            }
+        }else if (this.izquierda != null && this.izquierda.getRoot() == deleteValue) {
+            if (this.izquierda.izquierda == null && this.izquierda.derecha == null) {
+                this.izquierda = null;
+                return true;
+            } else { // Caso que mi valor a borrar tenga hijos
+                if (this.izquierda.izquierda != null && this.izquierda.derecha == null) { // caso que mi valor a borrar solo tenga izquierda
+                    this.izquierda = this.izquierda.izquierda;
+                    this.izquierda.izquierda = null;
+                    return true;
+                } else if (this.izquierda.izquierda == null && this.izquierda.derecha != null) { // caso que mi valor a borrar solo tenga derecha
+                    this.izquierda = this.izquierda.derecha;
+                    this.izquierda.derecha = null;
+                    return true;
+                } else { // caso de que mi valor a borrar tenga 2 hijos
+                    Integer nmi = this.izquierda.derecha.getNMI();
+                    this.delete(nmi);
+                    this.izquierda.valor = nmi;
+                    return true;
+                }
+            }
+        } else if (this.derecha != null && this.derecha.getRoot() == deleteValue) {
+            if (this.derecha.izquierda == null && this.derecha.derecha == null) {
+                this.derecha = null;
+                return true;
+            } else { // Caso que mi valor a borrar tenga hijos
+                if (this.derecha.izquierda != null && this.derecha.derecha == null) { // caso que mi valor a borrar solo tenga izquierda
+                    this.derecha = this.derecha.izquierda;
+                    this.derecha.izquierda = null;
+                    return true;
+                } else if (this.derecha.izquierda == null && this.derecha.derecha != null) { // caso que mi valor a  borrar solo tenga derecha
+                    this.derecha = this.derecha.derecha;
+                    this.derecha.derecha = null;
+                    return true;
+                } else { // caso de que mi valor a borrar tenga 2 hijos
+                    Integer nmi = this.derecha.derecha.getNMI();
+                    this.delete(nmi);
+                    this.derecha.valor = nmi;
+                    return true;
+                }
+            }
         } else {
             boolean isDeleted = false;
-            if (this.izquierda != null && value < this.getRoot()) {
+            if(this.getRoot() > deleteValue && this.izquierda != null){
                 isDeleted = this.izquierda.delete(deleteValue);
-            } else if (this.derecha != null && value > this.getRoot()) {
+            } else if (this.getRoot() < deleteValue && this.derecha != null) {
                 isDeleted = this.derecha.delete(deleteValue);
             }
-            return isDeleted; // Nunca encontre el valor a borrar
+            return isDeleted;
         }
     }
 
-    private Integer getAndDeleteHigher() {
-        Integer higherNMI = null;
-        if (this.derecha == null) {
-            if (this.izquierda != null) { // Arbol Hoja
-                higherNMI = this.getRoot();
-                this.valor = null;
-            } else {
-                higherNMI = this.izquierda.getAndDeleteHigher();
-            }
+    private Integer getNMI() {
+        if (this.izquierda == null) {
+            return this.getRoot();
         } else {
-            return this.derecha.getAndDeleteHigher();
+            return this.izquierda.getNMI();
         }
-        return higherNMI;
     }
-
+    
     public void printPreOrder() {
         if (this.getRoot() == null) {
             return;

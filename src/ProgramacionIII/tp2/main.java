@@ -2,16 +2,43 @@ package ProgramacionIII.tp2;
 public class main {
     
     public static void main(String[] args) {
-        int[] arr = { 6,3,7,9,1,5,4};
-        Tree arbol = new Tree(arr);
+        int[] valoresIniciales = new int[] { 15, 4, 1, 25, 50, 6, 7, 20, 5, 30 };
+        Tree miArbol = new Tree(valoresIniciales);
 
-        // arbol.add(5);
-        // arbol.add(6);
-        // arbol.add(7);
-        // arbol.add(15);
-        // arbol.add(1);
-        arbol.delete(7);
-        arbol.printPreOrder();
-        
+        miArbol.printPreOrder();
+        System.out.println(" ");
+        System.out.println(miArbol.getMaxElement());
+        System.out.println(miArbol.getHeight());
+        System.out.println(miArbol.getLongestBranch());
+        System.out.println(miArbol.getElemAtLevel(2));
+        System.out.println(miArbol.getFrontera());
+        System.out.println("--------------");
+        miArbol.add(23);
+        miArbol.add(3);
+        miArbol.delete(6);
+        miArbol.delete(30);
+
+        miArbol.printPreOrder();
+        System.out.println(" ");
+        System.out.println(miArbol.getMaxElement());
+        System.out.println(miArbol.getHeight());
+        System.out.println(miArbol.getLongestBranch());
+        System.out.println(miArbol.getElemAtLevel(2));
+        System.out.println(miArbol.getFrontera());
+        System.out.println("--------------");
+
+        miArbol.add(65);
+        miArbol.delete(5);
+        miArbol.delete(15);
+        miArbol.add(55);
+
+        miArbol.printPreOrder();
+        System.out.println(" ");
+        System.out.println(miArbol.getMaxElement());
+        System.out.println(miArbol.getHeight());
+        System.out.println(miArbol.getLongestBranch());
+        System.out.println(miArbol.getElemAtLevel(2));
+        System.out.println(miArbol.getFrontera());
+
     }
 }
