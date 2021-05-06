@@ -21,13 +21,8 @@ public class Tree {
         }
     }
 
-    public Tree getIzquierda() {
-        return this.izquierda;
-    }
-    public Tree getDerecha() {
-        return this.derecha;
-    }
-
+    // El costo computacional es en el peor de los casos O(n),
+    // siendo n la altura del arbol,
     public void add(int newValue) {
         if (this.valor == null) {
             this.setValor(newValue);
@@ -49,8 +44,10 @@ public class Tree {
     public void setValor(Integer value) {
         this.valor = value;
     }
-
-    public ArrayList<Integer> getLongestBranch() { // Tiene costo computacional de O(n) siendo n la cantidad de arboles
+    
+    // Tiene costo computacional de O(n) siendo n la cantidad de arboles,
+    // necesita recorrer todas las posibilidades para saber cual es la mas larga
+    public ArrayList<Integer> getLongestBranch() {
         ArrayList<Integer> longestBranch = new ArrayList<Integer>();
         if (this.izquierda == null && this.derecha == null) {
             longestBranch.add(this.getRoot());
@@ -73,7 +70,9 @@ public class Tree {
         return longestBranch;
     }
 
-    public ArrayList<Integer> getFrontera() { // Tiene costo computacional O(n) siendo n la cantidad de arboles.
+    // Tiene costo computacional O(n) siendo n la altura del arbol,
+    // en este no hay peor ni mejor caso, siempre depende de la altura, ya que devuelve los del ultimo "nivel"
+    public ArrayList<Integer> getFrontera() {
         ArrayList<Integer> frontera = new ArrayList<Integer>();
         if (this.izquierda == null && this.derecha == null) {
             frontera.add(this.getRoot());
@@ -88,11 +87,14 @@ public class Tree {
         return frontera;
     }
 
+
     public ArrayList<Integer> getElemAtLevel(int level) {
         return this.getElemAtLevel(level, 0);
     }
 
-    private ArrayList<Integer> getElemAtLevel(int level , int actualLevel) { // En el peor de los casos es de O(n) siendo n la cantidad de arboles, puede que nos hagan ir hasta la altura maxima
+    // En el peor de los casos es de O(n) siendo n la altura del arbol,
+    // puede que nos pidan el ultimo nivel
+    private ArrayList<Integer> getElemAtLevel(int level, int actualLevel) { 
         ArrayList<Integer> elemsAtLevel = new ArrayList<Integer>();
 
         if (actualLevel == level) {
@@ -109,7 +111,9 @@ public class Tree {
         return elemsAtLevel;
     }
 
-    public Integer getMaxElement() { // El costo computacional es de 0(n) siendo n la cantidad de arboles que haya entre la raiz y el arbol mas hacia la derecha (incluidos)
+    // El costo computacional es de 0(n) siendo n la altura del arbol
+    // no hay mejor ni peor caso ya que siempre va al arbol mas a la derecha
+    public Integer getMaxElement() { 
         if (this.getRoot() == null) {
             return null;
         }
@@ -119,7 +123,9 @@ public class Tree {
         return this.derecha.getMaxElement();
     }
 
-    public boolean hasElem(Integer value) { // En el peor de los casos es O(n) siendo n la cantidad de arboles, puede ser que este en el ultimo nivel
+    // En el peor de los casos es O(n) siendo n la cantidad de arboles,
+    // puede ser que este valor sea el mayor valor y se haya ingresado al ultimo
+    public boolean hasElem(Integer value) {
         if (value == this.valor) {
             return true;
         } else {
@@ -131,13 +137,14 @@ public class Tree {
             return false;
         }
     }
-    
-    public boolean delete(Integer deleteValue) { //preguntar como borrar el arbol en el getNMI
-        if (this.getRoot() == deleteValue) {
-            if (this.izquierda == null & this.derecha == null) {
+    // Tiene como costo computacional O(n + n) n siendo la altura del arbol
+    // en el peor de los casos debe de recorrer 2 veces, en el mejor de los casos solo recorre una vez la altura
+    public boolean delete(Integer deleteValue) { 
+        if (this.getRoot() == deleteValue) { // Caso que la raiz sea el valor a borrar
+            if (this.izquierda == null & this.derecha == null) { // arbol a borrar es hoja
                 this.valor = null;
                 return true;
-            } else {
+            } else { // mi arbol a borrar no es hoja
                 Integer nmi = null;
                 if (this.izquierda != null) {
                     nmi = this.izquierda.getMaxElement();
@@ -148,8 +155,8 @@ public class Tree {
                 this.valor = nmi;
                 return true;
             }
-        }else if (this.izquierda != null && this.izquierda.getRoot() == deleteValue) {
-            if (this.izquierda.izquierda == null && this.izquierda.derecha == null) {
+        }else if (this.izquierda != null && this.izquierda.getRoot() == deleteValue) { // mi arbol a borrar sea el izquierdo y no es nulo
+            if (this.izquierda.izquierda == null && this.izquierda.derecha == null) { // caso que mi arbol a borrar sea hoja
                 this.izquierda = null;
                 return true;
             } else { // Caso que mi valor a borrar tenga hijos
@@ -188,14 +195,14 @@ public class Tree {
                     return true;
                 }
             }
-        } else {
+        } else { // recursion para encontrar un paso antes a mi valor a borrar
             boolean isDeleted = false;
             if(this.getRoot() > deleteValue && this.izquierda != null){
                 isDeleted = this.izquierda.delete(deleteValue);
             } else if (this.getRoot() < deleteValue && this.derecha != null) {
                 isDeleted = this.derecha.delete(deleteValue);
             }
-            return isDeleted;
+            return isDeleted; // en el caso que no exista retorna false
         }
     }
 
@@ -207,6 +214,8 @@ public class Tree {
         }
     }
     
+    //Costo computacional O(n) siendo n la cantidad de valores de mi arbol,
+    // en mi caso cantidad de arboles.
     public void printPreOrder() {
         if (this.getRoot() == null) {
             return;
@@ -225,7 +234,9 @@ public class Tree {
             this.derecha.printPreOrder();
     }
     
-    public void printInOrder() { // los 3 tienen costo computacional O(n) recorre una vez por "nodo" en mi caso por arbol
+    // Costo computacional O(n) siendo n la cantidad de valores de mi arbol,
+    // en mi caso cantidad de arboles.
+    public void printInOrder() { 
         if (this.getRoot() == null) {
             return;
         }
@@ -236,6 +247,8 @@ public class Tree {
         this.derecha.printPreOrder();
     }
     
+    // Costo computacional O(n) siendo n la cantidad de valores de mi arbol,
+    // en mi caso cantidad de arboles.
     public void printPostOrder() {
         if (this.getRoot() == null) {
             return;
