@@ -139,7 +139,7 @@ public class Tree {
     }
     // Tiene como costo computacional O(n + n) n siendo la altura del arbol
     // en el peor de los casos debe de recorrer 2 veces, en el mejor de los casos solo recorre una vez la altura
-    public boolean delete(Integer deleteValue) { 
+    public boolean delete(Integer deleteValue) {
         if (this.getRoot() == deleteValue) { // Caso que la raiz sea el valor a borrar
             if (this.izquierda == null & this.derecha == null) { // arbol a borrar es hoja
                 this.valor = null;
@@ -155,7 +155,7 @@ public class Tree {
                 this.valor = nmi;
                 return true;
             }
-        }else if (this.izquierda != null && this.izquierda.getRoot() == deleteValue) { // mi arbol a borrar sea el izquierdo y no es nulo
+        } else if (this.izquierda != null && this.izquierda.getRoot() == deleteValue) { // mi arbol a borrar sea el izquierdo y no es nulo
             if (this.izquierda.izquierda == null && this.izquierda.derecha == null) { // caso que mi arbol a borrar sea hoja
                 this.izquierda = null;
                 return true;
@@ -197,7 +197,7 @@ public class Tree {
             }
         } else { // recursion para encontrar un paso antes a mi valor a borrar
             boolean isDeleted = false;
-            if(this.getRoot() > deleteValue && this.izquierda != null){
+            if (this.getRoot() > deleteValue && this.izquierda != null) {
                 isDeleted = this.izquierda.delete(deleteValue);
             } else if (this.getRoot() < deleteValue && this.derecha != null) {
                 isDeleted = this.derecha.delete(deleteValue);
@@ -206,6 +206,8 @@ public class Tree {
         }
     }
 
+    // El costo computacional es la altura del arbol,
+    // voy siempre a la izquierda hasta encontrar un arbol frontera
     private Integer getNMI() {
         if (this.izquierda == null) {
             return this.getRoot();
@@ -246,8 +248,7 @@ public class Tree {
         if (this.derecha != null)
         this.derecha.printPreOrder();
     }
-    
-    // Costo computacional O(n) siendo n la cantidad de valores de mi arbol,
+    //Costo computacional O(n) siendo n la cantidad de valores de mi arbol,
     // en mi caso cantidad de arboles.
     public void printPostOrder() {
         if (this.getRoot() == null) {
@@ -285,6 +286,7 @@ public class Tree {
         }
     }
 
+    // El costo computacional O(1) es constante en todos los casos
     public boolean isEmpty() {
         return this.valor == null;
     }

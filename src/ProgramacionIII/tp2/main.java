@@ -5,12 +5,18 @@ public class main {
         int[] valoresIniciales = new int[] { 15, 4, 1, 25, 50, 6, 7, 20, 5, 30 };
         Tree miArbol = new Tree(valoresIniciales);
 
+        System.out.println("Pre order");
         miArbol.printPreOrder();
-        System.out.println(" ");
+        System.out.println("");
+        System.out.println("MaxElement");
         System.out.println(miArbol.getMaxElement());
+        System.out.println("getHeight");
         System.out.println(miArbol.getHeight());
+        System.out.println("getLongestBranch");
         System.out.println(miArbol.getLongestBranch());
+        System.out.println("getElemAtLevel(2)");
         System.out.println(miArbol.getElemAtLevel(2));
+        System.out.println("getFrontera");
         System.out.println(miArbol.getFrontera());
         System.out.println("--------------");
         miArbol.add(23);
@@ -18,12 +24,18 @@ public class main {
         miArbol.delete(6);
         miArbol.delete(30);
 
+        System.out.println("Pre order");
         miArbol.printPreOrder();
-        System.out.println(" ");
+        System.out.println("");
+        System.out.println("MaxElement");
         System.out.println(miArbol.getMaxElement());
+        System.out.println("getHeight");
         System.out.println(miArbol.getHeight());
+        System.out.println("getLongestBranch");
         System.out.println(miArbol.getLongestBranch());
+        System.out.println("getElemAtLevel(2)");
         System.out.println(miArbol.getElemAtLevel(2));
+        System.out.println("getFrontera");
         System.out.println(miArbol.getFrontera());
         System.out.println("--------------");
 
@@ -32,12 +44,18 @@ public class main {
         miArbol.delete(15);
         miArbol.add(55);
 
+        System.out.println("Pre order");
         miArbol.printPreOrder();
-        System.out.println(" ");
+        System.out.println("");
+        System.out.println("MaxElement");
         System.out.println(miArbol.getMaxElement());
+        System.out.println("getHeight");
         System.out.println(miArbol.getHeight());
+        System.out.println("getLongestBranch");
         System.out.println(miArbol.getLongestBranch());
+        System.out.println("getElemAtLevel(2)");
         System.out.println(miArbol.getElemAtLevel(2));
+        System.out.println("getFrontera");
         System.out.println(miArbol.getFrontera());
 
     }
